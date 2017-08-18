@@ -1,0 +1,35 @@
+{
+  "name": "rmisint",
+  "version": "0.0.1",
+  "description": "RMIS integration org",
+  "main": "index.js",
+  "scripts": {
+    "start": "pm2 start index.js --name rmisint",
+    "test": "mocha ./test --timeout 30000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ooby/rmisint.git"
+  },
+  "keywords": [
+    "RMIS",
+    "integration",
+    "org-server"
+  ],
+  "author": "Afanasy Argunov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ooby/rmisint/issues"
+  },
+  "homepage": "https://github.com/ooby/rmisint#readme",
+  "dependencies": {
+    "nconf": "^0.8.4",
+    "refbooks": "^0.0.3",
+    "rmisjs": "^0.4.1"
+  },
+  "devDependencies": {
+    "mocha": "^3.5.0",
+    "chai": "^4.1.1",
+    "chai-http": "^3.0.0"
+  }
+}
