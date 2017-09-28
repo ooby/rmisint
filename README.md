@@ -1,10 +1,11 @@
-## Org-сервер для интеграционных сервисов [RMIS](https://www.rtlabs.ru/projects/regionalnaya-meditsinskaya-informatsionnaya-sistema-rmis/)
+## Orchestrator-сервер для интеграционных сервисов [RMIS](https://www.rtlabs.ru/projects/regionalnaya-meditsinskaya-informatsionnaya-sistema-rmis/)
 
 1. `npm i`
 2. Создать файл конфигурации `config/config.json`:
 ```json
 {
     "config": {
+        "timeout": 900000, // таймаут синхронизации в миллисекундах
         "rmis": {
             "auth": {
                 "username": "username",
