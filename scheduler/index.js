@@ -1,7 +1,7 @@
 const schedule = async cfg => {
     const fs = require('fs');
     const rb = require('refbooks')(cfg);
-    const rmisjs = require('./index')(cfg);
+    const rmisjs = require('rmisjs')(cfg);
     const rmis = rmisjs.rmis;
     const composer = rmisjs.composer;
     const er14 = rmisjs.integration.er14;
