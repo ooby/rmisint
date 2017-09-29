@@ -1,3 +1,4 @@
+const moment = require('moment');
 const schedule = async cfg => {
     const fs = require('fs');
     const rb = require('refbooks')(cfg);
@@ -7,7 +8,6 @@ const schedule = async cfg => {
     const er14 = rmisjs.integration.er14;
     try {
         let rbl = await rb.getRefbook({ code: 'MDP365', version: '1.0', part: '1' });
-        rbl.mongoose.connection.close();
         let data = rbl.data.map(i => {
             return { code: i[1].value, name: i[3].value };
         });
@@ -22,10 +22,11 @@ const schedule = async cfg => {
         r = await composer.syncSchedules(locs);
         result.push(r);
         fs.writeFileSync('debug.json', JSON.stringify(result));
+        console.log('sync', moment(Date.now()).format('HH:mm:ss DD-MM-YYYY'));
     } catch (e) { console.error(e); }
 };
 const sched = cfg => {
-    setTimeout(() => {
+    setInterval(() => {
         schedule(cfg);
     }, cfg.timeout);
 };
