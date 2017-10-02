@@ -4,7 +4,7 @@
   "description": "RMIS integration org",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start index.js --name rmisint",
+    "start": "pm2 start index.js -i 1 --name rmisint",
     "test": "mocha ./test --timeout 30000"
   },
   "repository": {

@@ -21,8 +21,10 @@ const schedule = async cfg => {
         result.push(r);
         r = await composer.syncSchedules(locs);
         result.push(r);
-        fs.writeFileSync('debug.json', JSON.stringify(result));
-        console.log('sync', moment(Date.now()).format('HH:mm:ss DD-MM-YYYY'));
+        let time = moment(Date.now()).format('HH_mm_ss_DD_MM_YYYY');
+        let logFileName = 'logs/' + time + '.json';
+        fs.writeFileSync(logFileName, JSON.stringify(result));
+        console.log('sync', time);
     } catch (e) { console.error(e); }
 };
 const sched = cfg => {
