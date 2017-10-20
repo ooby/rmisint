@@ -28,6 +28,7 @@ const schedule = async cfg => {
     } catch (e) { console.error(e); }
 };
 const sched = cfg => {
+    schedule(cfg);
     setInterval(() => {
         schedule(cfg);
     }, cfg.timeout);
