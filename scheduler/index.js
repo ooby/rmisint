@@ -1,12 +1,13 @@
 const moment = require('moment');
-const refbooks = require('refbooks');
-const rmisjs = require('rmisjs');
 const fs = require('fs');
+const rmisjs = require('rmisjs');
+const refbooks = require('refbooks');
+const mongosync = require('rmisjs/composer/mongo/sync');
 
-const schedule = async cfg => {
+const update = async (sync, composer, rb) => {
     try {
-        const composer = rmisjs(cfg).composer;
-        let rbl = await refbooks(cfg).getRefbook({
+        await sync();
+        let rbl = await rb.getRefbook({
             code: 'MDP365',
             version: '1.0',
             part: '1'
@@ -19,24 +20,23 @@ const schedule = async cfg => {
                 };
             })
         );
-        let result = [
+        let time = moment(Date.now()).format('HH_mm_ss_DD_MM_YYYY');
+        fs.writeFileSync(`./logs/${time}.json`, JSON.stringify([
             await composer.syncDepartments(locs),
             await composer.syncEmployees(locs),
             await composer.syncRooms(locs),
             await composer.syncSchedules(locs)
-        ];
-        let time = moment(Date.now()).format('HH_mm_ss_DD_MM_YYYY');
-        let logFileName = 'logs/' + time + '.json';
-        fs.writeFileSync(logFileName, JSON.stringify(result));
+        ]));
         console.log('sync', time);
     } catch (e) {
         console.error(e);
     }
 };
 
-const sched = cfg => {
-    schedule(cfg);
-    setInterval(() => schedule(cfg), cfg.timeout);
+module.exports = cfg => {
+    const rb = refbooks(cfg);
+    const composer = rmisjs(cfg).composer;
+    const sync = () => mongosync(cfg);
+    update(sync, composer, rb);
+    setInterval(() => update(sync, composer, rb), cfg.timeout);
 };
-
-module.exports = sched;
