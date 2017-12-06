@@ -4,7 +4,7 @@
   "description": "RMIS integration org",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start index.js -i 1 --name rmisint",
+    "start": "pm2 start index.js -i 1 --name rmisint --log-date-format 'YYYY-MM-DD HH:mm:ss'",
     "test": "mocha ./test --timeout 30000"
   },
   "repository": {
@@ -26,7 +26,7 @@
     "moment": "^2.18.1",
     "nconf": "^0.8.5",
     "refbooks": "^0.0.6",
-    "rmisjs": "^0.4.23"
+    "rmisjs": "^0.4.25"
   },
   "devDependencies": {
     "mocha": "^3.5.3",
