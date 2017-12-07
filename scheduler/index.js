@@ -31,14 +31,13 @@ const update = async (sync, composer, rb) => {
         console.log('Syncing employees');
         r = await composer.syncEmployees(locs);
         results.push(r);
-        console.log('Syncing departments');
-        r = await composer.syncDepartments(locs);
-        results.push(r);
         console.log('Syncing room');
         r = await composer.syncRooms(locs);
         results.push(r);
+        console.log('Deleting schedules');
+        r = await composer.deleteSchedules();
+        results.push(r);
         console.log('Syncing schedules');
-        await composer.deleteSchedules();
         r = await composer.syncSchedules(locs);
         results.push(r);
         fs.writeFileSync(`./logs/${time}.json`, JSON.stringify(results));
