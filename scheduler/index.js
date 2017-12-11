@@ -5,43 +5,54 @@ const refbooks = require('refbooks');
 const mongosync = require('rmisjs/composer/mongo/sync');
 const collect = require('rmisjs/composer/libs/collect');
 
-const update = async (sync, composer, rb) => {
-    try {
-        console.log('Syncing MongoDB with RMIS...');
-        await sync();
-        let rbl = await rb.getRefbook({
-            code: 'MDP365',
-            version: '1.0',
-            part: '1'
+let cache;
+const getDetailedLocations = async(composer, rb) => {
+    let rbl = await rb.getRefbook({
+        code: 'MDP365',
+        version: '1.0',
+        part: '1'
+    });
+    if (rbl instanceof Error) rbl = cache;
+    else {
+        rbl = rbl.data.map(i => {
+            return {
+                code: i[1].value,
+                name: i[3].value
+            };
         });
-        let locs = await composer.getDetailedLocations(
-            rbl.data.map(i => {
-                return {
-                    code: i[1].value,
-                    name: i[3].value
-                };
-            })
-        );
-        let time = moment(Date.now()).format('HH_mm_ss_DD_MM_YYYY');
-        console.log('Syncing with ER14...');
-        let results = [];
-        console.log('Syncing departments');
-        let r = await composer.syncDepartments(locs);
-        results.push(r);
-        console.log('Syncing employees');
-        r = await composer.syncEmployees(locs);
-        results.push(r);
-        console.log('Syncing room');
-        r = await composer.syncRooms(locs);
-        results.push(r);
-        console.log('Deleting schedules');
-        r = await composer.deleteSchedules();
-        results.push(r);
-        console.log('Syncing schedules');
-        r = await composer.syncSchedules(locs);
-        results.push(r);
-        fs.writeFileSync(`./logs/${time}.json`, JSON.stringify(results));
-        console.log('sync', time);
+        cache = rbl;
+    }
+    return await composer.getDetailedLocations(rbl);
+};
+
+const filterLogs = logs =>
+    logs.filter(i =>
+        !/(имеется занятый слот)/.test(i.ErrorText) &&
+        i.ErrorCode !== 0
+    ).map(i => {
+        i.ErrorText = i.ErrorText.split(';');
+        return i;
+    });
+
+const update = async(sync, composer, rb) => {
+    try {
+        console.log('SYNC', 'RMIS->MongoDB');
+        await sync();
+        let detailed = await getDetailedLocations(composer, rb);
+        let logs = [];
+        console.log('SYNC', 'MongoDB->ER14', 'departments');
+        logs = logs.concat(await composer.syncDepartments(detailed));
+        console.log('SYNC', 'MongoDB->ER14', 'employees');
+        logs = logs.concat(await composer.syncEmployees(detailed));
+        console.log('SYNC', 'MongoDB->ER14', 'rooms');
+        logs = logs.concat(await composer.syncRooms(detailed));
+        console.log('SYNC', 'MongoDB->ER14', 'deleteSchedules');
+        logs = logs.concat(await composer.deleteSchedules(0, 29));
+        console.log('SYNC', 'MongoDB->ER14', 'schedules');
+        logs = logs.concat(await composer.syncSchedules(detailed));
+        logs = filterLogs(logs);
+        if (logs.length === 0) console.log('Finished');
+        else for (let error of logs) console.error(error);
     } catch (e) {
         console.error(e);
     }
