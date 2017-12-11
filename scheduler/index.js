@@ -5,24 +5,30 @@ const refbooks = require('refbooks');
 const mongosync = require('rmisjs/composer/mongo/sync');
 const collect = require('rmisjs/composer/libs/collect');
 
-let cache;
 const getDetailedLocations = async(composer, rb) => {
-    let rbl = await rb.getRefbook({
+    let mdp365 = await rb.getRefbook({
         code: 'MDP365',
         version: '1.0',
         part: '1'
     });
-    if (rbl instanceof Error) rbl = cache;
-    else {
-        rbl = rbl.data.map(i => {
-            return {
-                code: i[1].value,
-                name: i[3].value
-            };
-        });
-        cache = rbl;
-    }
-    return await composer.getDetailedLocations(rbl);
+    mdp365 = mdp365.data.map(i => {
+        return {
+            code: i[1].value,
+            name: i[3].value
+        };
+    });
+    let c33001 = await rb.getRefbook({
+        code: 'C33001',
+        version: '1.0',
+        part: '1'
+    });
+    c33001 = c33001.data.map(i => {
+        return {
+            code: i[2].value,
+            name: i[3].value
+        };
+    });
+    return await composer.getDetailedLocations(mdp365, c33001);
 };
 
 const filterLogs = logs =>
