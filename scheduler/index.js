@@ -33,12 +33,9 @@ const getDetailedLocations = async(composer, rb) => {
 
 const filterLogs = logs =>
     logs.filter(i =>
-        !/(имеется занятый слот)/.test(i.ErrorText) &&
+        !/имеется занятый слот/.test(i.ErrorText) &&
         i.ErrorCode !== 0
-    ).map(i => {
-        i.ErrorText = i.ErrorText.split(';');
-        return i;
-    });
+    );
 
 const update = async(sync, composer, rb) => {
     try {
