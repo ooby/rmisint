@@ -50,7 +50,7 @@ const update = async(sync, composer, rb) => {
         console.log('SYNC', 'MongoDB->ER14', 'rooms');
         logs = logs.concat(await composer.syncRooms(detailed));
         console.log('SYNC', 'MongoDB->ER14', 'deleteSchedules');
-        logs = logs.concat(await composer.deleteSchedules(0, 29));
+        logs = logs.concat(await composer.deleteSchedules());
         console.log('SYNC', 'MongoDB->ER14', 'schedules');
         logs = logs.concat(await composer.syncSchedules(detailed));
         logs = filterLogs(logs);
