@@ -9,25 +9,27 @@ const getDetailedLocations = async(composer, rb) => {
             code: 'MDP365',
             version: '1.0',
             part: '1'
-        }),
+        }).then(r =>
+            r.data.map(i => {
+                return {
+                    code: i[1].value,
+                    name: i[3].value
+                }
+            })
+        ),
         rb.getRefbook({
             code: 'C33001',
             version: '1.0',
             part: '1'
-        })
+        }).then(r =>
+            r.data.map(i => {
+                return {
+                    code: i[2].value,
+                    name: i[3].value
+                }
+            })
+        )
     ]);
-    mdp365 = mdp365.data.map(i => {
-        return {
-            code: i[1].value,
-            name: i[3].value
-        };
-    });
-    c33001 = c33001.data.map(i => {
-        return {
-            code: i[2].value,
-            name: i[3].value
-        };
-    });
     return await composer.getDetailedLocations(mdp365, c33001);
 };
 
