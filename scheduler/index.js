@@ -23,24 +23,20 @@ const getRefbook = (code, ids, rb) =>
     })
 
 const getDetailedLocations = async(composer, rb) => {
-    let [mdp365, c33001] = await Promise.all([
-        getRefbook('MDP365', [1, 3], rb),
-        getRefbook('C33001', [2, 3], rb)
-    ]);
+    let mdp365 = await getRefbook('MDP365', [1, 3], rb);
+    let c33001 = await getRefbook('C33001', [2, 3], rb);
     return await composer.getDetailedLocations(mdp365, c33001);
 };
 
-const filterLogs = logs =>
-    logs.filter(i =>
-        !/имеется занятый слот/.test(i.ErrorText) &&
-        i.ErrorCode !== 0
-    );
+const logErrors = (logs = []) => {
+    for (let log of logs) console.error(log);
+}
 
-const update = async cfg => {
+const update = async s => {
     try {
-        const composer = rmisjs(cfg).composer;
+        const composer = rmisjs(s).composer;
         console.log('RMIS -> MongoDB');
-        await connect(cfg, async () => {
+        await connect(s, async () => {
             console.log('\tdepartments...');
             await composer.mongoDepartments();
             console.log('\tlocations...');
@@ -54,30 +50,25 @@ const update = async cfg => {
             ]);
         });
         console.log('MongoDB -> detailedLocations...');
-        let detailed = await getDetailedLocations(composer, refbooks(cfg));
-        let logs = [];
+        let detailed = await getDetailedLocations(composer, refbooks(s));
         console.log('detailedLocations -> ER14');
         console.log('\tdepartments...');
-        logs = logs.concat(await composer.syncDepartments(detailed));
+        logErrors(await composer.syncDepartments(detailed));
         console.log('\temployees...');
-        logs = logs.concat(await composer.syncEmployees(detailed));
+        logErrors(await composer.syncEmployees(detailed));
         console.log('\trooms...');
-        logs = logs.concat(await composer.syncRooms(detailed));
+        logErrors(await composer.syncRooms(detailed));
         console.log('\tdeleteSchedules...');
-        logs = logs.concat(await composer.deleteSchedules());
+        logErrors(await composer.deleteSchedules());
         console.log('\tschedules...');
-        logs = logs.concat(await composer.syncSchedules(detailed));
+        logErrors(await composer.syncSchedules(detailed));
         console.log('Finished');
-        for (let error of filterLogs(logs)) console.error(error);
     } catch (e) {
         console.error(e);
     }
 };
 
-module.exports = cfg => {
-    let last = update(cfg);
-    setInterval(async() => {
-        await last;
-        last = update(cfg)
-    }, cfg.timeout);
+module.exports = s => {
+    update(s);
+    setInterval(() => update(s), s.timeout);
 };
