@@ -20,7 +20,7 @@ const getRefbook = (code, ids, rb) =>
     .catch(e => {
         console.error(e);
         return e;
-    })
+    });
 
 const getDetailedLocations = async(composer, rb) => {
     let mdp365 = await getRefbook('MDP365', [1, 3], rb);
@@ -30,7 +30,7 @@ const getDetailedLocations = async(composer, rb) => {
 
 const logErrors = (logs = []) => {
     for (let log of logs) console.error(log);
-}
+};
 
 const update = async s => {
     try {
