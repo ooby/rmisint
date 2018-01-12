@@ -14,7 +14,7 @@ const getRefbook = (code, ids, rb) =>
             return {
                 code: i[ids[0]].value,
                 name: i[ids[1]].value
-            }
+            };
         })
     )
     .catch(e => {
@@ -29,46 +29,53 @@ const getDetailedLocations = async(composer, rb) => {
 };
 
 const logErrors = (logs = []) => {
-    for (let log of logs) console.error(log);
+    for (let log of [].concat(logs)) console.error(log);
 };
 
 const update = async s => {
     try {
         const composer = rmisjs(s).composer;
-        console.log('RMIS -> MongoDB');
+        console.log('1. Caching to MongoDB');
         await connect(s, async () => {
-            console.log('\tdepartments...');
+            console.log('1.1. Departments');
             await composer.mongoDepartments();
-            console.log('\tlocations...');
+            console.log('1.2. Locations');
             await composer.mongoLocations();
-            console.log('\temployees, rooms, services and timeslots...');
+            console.log('1.3. Employees, rooms, services and timeslots');
             await Promise.all([
-                composer.mongoEmployees(),
-                composer.mongoRooms(),
-                composer.mongoServices(),
-                composer.mongoTimeSlots()
+                composer.mongoRooms().then(() => console.log('Rooms are cached')),
+                composer.mongoServices().then(() => console.log('Services are cached')),
+                composer.mongoEmployees().then(() => console.log('Employees are cached')),
+                composer.mongoTimeSlots().then(() => console.log('Timeslots are cached'))
             ]);
         });
-        console.log('MongoDB -> detailedLocations...');
+        console.log('2. Getting detailed locations');
         let detailed = await getDetailedLocations(composer, refbooks(s));
-        console.log('detailedLocations -> ER14');
-        console.log('\tdepartments...');
+        console.log('3. Sending to ER14');
+        console.log('3.1. Departments');
         logErrors(await composer.syncDepartments(detailed));
-        console.log('\temployees...');
+        console.log('3.2. Employees');
         logErrors(await composer.syncEmployees(detailed));
-        console.log('\trooms...');
+        console.log('3.3. Rooms');
         logErrors(await composer.syncRooms(detailed));
-        console.log('\tdeleteSchedules...');
+        console.log('3.4. Deleting old schedule');
         logErrors(await composer.deleteSchedules());
-        console.log('\tschedules...');
+        console.log('3.5. Adding new schedule');
         logErrors(await composer.syncSchedules(detailed));
-        console.log('Finished');
+        console.log('4. Finished');
     } catch (e) {
         console.error(e);
     }
 };
 
-module.exports = s => {
-    update(s);
-    setInterval(() => update(s), s.timeout);
+const wait = async time =>
+    new Promise((resolve, reject) =>
+        setTimeout(() => resolve, time)
+    );
+
+module.exports = async s => {
+    while (true) {
+        await update(s);
+        await wait(s.timeout);
+    }
 };
