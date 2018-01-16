@@ -68,14 +68,7 @@ const update = async s => {
     }
 };
 
-const wait = async time =>
-    new Promise((resolve, reject) =>
-        setTimeout(() => resolve, time)
-    );
-
-module.exports = async s => {
-    while (true) {
-        await update(s);
-        await wait(s.timeout);
-    }
+module.exports = s => {
+    update(s);
+    setInterval(() => update(s), s.timeout);
 };
