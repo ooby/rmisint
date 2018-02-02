@@ -1,10 +1,11 @@
 {
   "name": "rmisint",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "RMIS integration org",
   "main": "index.js",
   "scripts": {
     "start": "pm2 start index.js -i 1 --name rmisint --log-date-format 'YYYY-MM-DD HH:mm:ss'",
+    "init-upload": "pm2 start initUpload.js -i 1 --name rmisint-upload --no-autorestart",
     "test": "mocha ./test --timeout 30000"
   },
   "repository": {
@@ -26,7 +27,7 @@
     "moment": "^2.18.1",
     "nconf": "^0.8.5",
     "refbooks": "^0.0.7",
-    "rmisjs": "^0.4.43"
+    "rmisjs": "^0.4.44"
   },
   "devDependencies": {
     "mocha": "^3.5.3",
