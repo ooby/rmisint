@@ -1,6 +1,6 @@
 {
   "name": "rmisint",
-  "version": "0.0.21",
+  "version": "0.0.23",
   "description": "RMIS integration org",
   "main": "index.js",
   "scripts": {
@@ -34,7 +34,7 @@
     "moment": "^2.18.1",
     "nconf": "^0.8.5",
     "refbooks": "^0.0.7",
-    "rmisjs": "^0.4.52"
+    "rmisjs": "^0.5.2"
   },
   "devDependencies": {
     "mocha": "^3.5.3",

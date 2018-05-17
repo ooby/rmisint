@@ -1,6 +1,6 @@
 const fs = require('fs');
 const rmisjs = require('rmisjs');
-const connect = require('rmisjs/composer/mongo/connect');
+const connector = require('rmisjs/composer/mongo/connector');
 const refbooks = require('refbooks');
 
 const getRefbook = (code, ids, rb) =>
@@ -36,20 +36,28 @@ const update = async s => {
     try {
         const composer = rmisjs(s).composer;
         console.log('1. Caching to MongoDB');
-        await connect(s, async () => {
-            console.log('1.1. Departments');
-            await composer.mongoDepartments();
-            console.log('1.2. Locations');
-            await composer.mongoLocations();
-            console.log('1.3. Employees, rooms, services and timeslots');
-            await Promise.all([
-                composer.mongoRooms().then(() => console.log('Rooms are cached')),
-                composer.mongoServices().then(() => console.log('Services are cached')),
-                composer.mongoEmployees().then(() => console.log('Employees are cached')),
-                composer.mongoTimeSlots().then(() => console.log('Timeslots are cached'))
-            ]);
-        });
-        console.log('2. Getting detailed locations');
+        connector.connect(s);
+        console.log('1.1. Departments');
+        await composer.mongoDepartments();
+        console.log('1.2. Locations');
+        await composer.mongoLocations();
+        console.log('1.3. Employees, rooms, services and timeslots');
+        let services = composer.mongoServices()
+            .then(() => console.log('Services are cached'));
+        await Promise.all([
+            composer.mongoRooms()
+                .then(() => console.log('Rooms are cached')),
+            composer.mongoEmployees()
+                .then(() => console.log('Employees are cached')),
+            composer.mongoTimeSlots()
+                .then(() => console.log('Timeslots are cached'))
+        ]);
+        console.log('Generating app cache');
+        await Promise.all([
+            composer.mongoAppCache(),
+            services
+        ]);
+        console.log('2. Getting detailed locations and generating app cache');
         let detailed = await getDetailedLocations(composer, refbooks(s));
         console.log('3. Sending to ER14');
         console.log('3.1. Departments');
@@ -65,6 +73,8 @@ const update = async s => {
         console.log('4. Finished');
     } catch (e) {
         console.error(e);
+    } finally {
+        connector.close();
     }
 };
 
