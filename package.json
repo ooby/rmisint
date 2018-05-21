@@ -1,6 +1,6 @@
 {
   "name": "rmisint",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "RMIS integration org",
   "main": "index.js",
   "scripts": {
@@ -31,16 +31,16 @@
   },
   "homepage": "https://github.com/ooby/rmisint#readme",
   "dependencies": {
-    "moment": "^2.18.1",
-    "nconf": "^0.8.5",
+    "moment": "^2.22.1",
+    "nconf": "^0.10.0",
     "refbooks": "^0.0.8",
-    "rmisjs": "^0.5.4"
+    "rmisjs": "^0.5.6"
   },
   "devDependencies": {
-    "mocha": "^3.5.3",
+    "mocha": "^5.2.0",
     "chai": "^4.1.2",
-    "chai-http": "^3.0.0",
+    "chai-http": "^4.0.0",
     "husky": "^0.14.3",
-    "lint-staged": "^7.0.0"
+    "lint-staged": "^7.1.1"
   }
 }
