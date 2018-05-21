@@ -34,7 +34,7 @@
     "moment": "^2.22.1",
     "nconf": "^0.10.0",
     "refbooks": "^0.0.8",
-    "rmisjs": "^0.5.6"
+    "rmisjs": "^0.5.7"
   },
   "devDependencies": {
     "mocha": "^5.2.0",
