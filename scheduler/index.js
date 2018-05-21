@@ -4,7 +4,6 @@ const connector = require('rmisjs/composer/mongo/connector');
 const refbooks = require('rmisjs/composer/libs/refbook');
 
 module.exports = async s => {
-    const connection = connector.connect(s);
     const { composer } = rmisjs(s);
     const rb = refbooks(s);
 
@@ -28,48 +27,48 @@ module.exports = async s => {
     };
 
     const logErrors = (logs = []) => {
-        for (let log of [].concat(logs)) console.error(log);
+        for (let log of [].concat(logs)) {
+            let valid = (s.ignoreLog || [])
+                .map(ignore => log.ErrorText.indexOf(ignore) > -1)
+                .find(i => i === true);
+            if (!valid) continue;
+            console.error(log);
+        }
+    };
+
+    const logWrap = async (event, cb) => {
+        console.log(`\tstart\t${event}`);
+        let data = await cb();
+        console.log(`\tstop\t${event}`);
+        return data;
     };
 
     const update = async s => {
         try {
-            console.log('1. Caching to MongoDB');
-            console.log('1.1. Departments');
-            await composer.mongoDepartments();
-            console.log('1.2. Locations');
-            await composer.mongoLocations();
-            console.log('1.3. Employees, rooms, services and timeslots');
-            let services = composer.mongoServices()
-                .then(() => console.log('Services are cached'));
+            connector.connect(s);
+            console.log('Sync started');
+            await logWrap('Departments', () => composer.mongoDepartments());
+            await logWrap('Locations', () => composer.mongoLocations());
+            let services = logWrap('Services', () => composer.mongoServices());
             await Promise.all([
-                composer.mongoRooms()
-                    .then(() => console.log('Rooms are cached')),
-                composer.mongoEmployees()
-                    .then(() => console.log('Employees are cached')),
-                composer.mongoTimeSlots()
-                    .then(() => console.log('Timeslots are cached'))
+                logWrap('Rooms', () => composer.mongoRooms()),
+                logWrap('Employees', () => composer.mongoEmployees()),
+                logWrap('Timeslots', () => composer.mongoTimeSlots())
             ]);
-            console.log('Generating app cache');
-            await Promise.all([
-                composer.mongoAppCache(),
-                services
-            ]);
-            console.log('2. Getting detailed locations');
-            let detailed = await getDetailedLocations(composer, refbooks(s));
-            console.log('3. Sending to ER14');
-            console.log('3.1. Departments');
-            logErrors(await composer.syncDepartments(detailed));
-            console.log('3.2. Employees');
-            logErrors(await composer.syncEmployees(detailed));
-            console.log('3.3. Rooms');
-            logErrors(await composer.syncRooms(detailed));
-            console.log('3.4. Deleting old schedule');
-            logErrors(await composer.deleteSchedules());
-            console.log('3.5. Adding new schedule');
-            logErrors(await composer.syncSchedules(detailed));
-            console.log('4. Finished');
+            let cachegen = logWrap('AppCache', () => composer.mongoAppCache());
+            await services;
+            let detailed = await logWrap('Details', () => getDetailedLocations());
+            logErrors(await logWrap('Department ER14', () => composer.syncDepartments(detailed)));
+            logErrors(await logWrap('Employees ER14', () => composer.syncEmployees(detailed)));
+            logErrors(await logWrap('Rooms ER14', () => composer.syncRooms(detailed)));
+            logErrors(await logWrap('Delete schedule ER14', () => composer.deleteSchedules()));
+            logErrors(await logWrap('Add schedule ER14', () => composer.syncSchedules(detailed)));
+            await cachegen;
+            console.log('Sync finished');
         } catch (e) {
             console.error(e);
+        } finally {
+            connector.close();
         }
     };
 
