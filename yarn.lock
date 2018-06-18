@@ -1891,9 +1891,9 @@ ret@~0.1.10:
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
 
-rmisjs@^0.6.4:
-  version "0.6.4"
-  resolved "https://registry.yarnpkg.com/rmisjs/-/rmisjs-0.6.4.tgz#9b3d129f056f389b2a3c9ff9b95ecc9aa4c54108"
+rmisjs@^0.6.6:
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/rmisjs/-/rmisjs-0.6.6.tgz#863890b1c397a1e983a978dc473b235088ccfbdb"
   dependencies:
     jsdom "^11.11.0"
     moment "^2.22.2"
