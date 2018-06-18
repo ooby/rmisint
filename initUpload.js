@@ -1,9 +1,11 @@
 const rmisjs = require('rmisjs');
 const config = require('./config').get('config');
+const { composer } = rmisjs(config);
 
-async function main() {
-    const composer = rmisjs(config).composer;
+const main = async () => {
+    await composer.mongoConnect();
     await composer.syncEmk();
+    await composer.mongoDisconnect();
 };
 
 main();

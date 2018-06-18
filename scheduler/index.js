@@ -1,6 +1,5 @@
 const fs = require('fs');
 const rmisjs = require('rmisjs');
-const connector = require('rmisjs/composer/mongo/connector');
 const refbooks = require('rmisjs/composer/libs/refbook');
 
 module.exports = async s => {
@@ -45,7 +44,6 @@ module.exports = async s => {
 
     const update = async s => {
         try {
-            connector.connect(s);
             console.log('Sync started');
             await logWrap('Departments', () => composer.mongoDepartments());
             await logWrap('Locations', () => composer.mongoLocations());
@@ -67,8 +65,6 @@ module.exports = async s => {
             console.log('Sync finished');
         } catch (e) {
             console.error(e);
-        } finally {
-            connector.close();
         }
     };
 

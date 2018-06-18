@@ -1,4 +1,9 @@
 const nconf = require('./config');
 const config = nconf.get('config');
+const scheduler = require('./scheduler');
+const rmisjs = require('rmisjs');
 
-require('./scheduler')(config);
+rmisjs(config)
+    .composer
+    .mongoConnect()
+    .then(() => scheduler(config));
