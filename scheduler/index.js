@@ -1,10 +1,10 @@
-const fs = require('fs');
 const rmisjs = require('rmisjs');
 const refbooks = require('rmisjs/composer/libs/refbook');
 
 module.exports = async s => {
     const { composer } = rmisjs(s);
     const rb = refbooks(s);
+    const ignore = [].concat(s.ignoreLog).filter(i => !!i);
 
     const getRefbook = async (code, indexes) => {
         const d = await rb;
@@ -25,15 +25,19 @@ module.exports = async s => {
         return await composer.getDetailedLocations(...d);
     };
 
-    const logErrors = (logs = []) => {
-        for (let log of [].concat(logs)) {
-            let valid = (s.ignoreLog || [])
-                .map(ignore => log.ErrorText.indexOf(ignore) > -1)
-                .find(i => i === true);
-            if (!valid) continue;
-            console.error(log);
-        }
-    };
+    const logErrors = (logs = []) =>
+        Array.from(logs).filter(i => {
+            try {
+                for (let term of ignore) {
+                    if (i.ErrorText.indexOf(term) > -1) {
+                        return false;
+                    }
+                }
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }).forEach(console.log);
 
     const logWrap = async (event, cb) => {
         console.log(`\tstart\t${event}`);
@@ -42,7 +46,7 @@ module.exports = async s => {
         return data;
     };
 
-    const update = async s => {
+    const update = async () => {
         try {
             console.log('Sync started');
             await logWrap('Departments', () => composer.mongoDepartments());
@@ -68,6 +72,6 @@ module.exports = async s => {
         }
     };
 
-    update(s);
-    setInterval(() => update(s), s.timeout);
+    update();
+    setInterval(() => update(), s.timeout);
 };

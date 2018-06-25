@@ -1175,9 +1175,9 @@ kareem@1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/kareem/-/kareem-1.5.0.tgz#e3e4101d9dcfde299769daf4b4db64d895d17448"
 
-kareem@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/kareem/-/kareem-2.1.0.tgz#d63197b57311830e4ceb3f34431f22f2de826a03"
+kareem@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/kareem/-/kareem-2.2.1.tgz#9950809415aa3cde62ab43b4f7b919d99816e015"
 
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
@@ -1433,9 +1433,9 @@ mongodb-core@2.1.18:
     bson "~1.0.4"
     require_optional "~1.0.0"
 
-mongodb-core@3.0.8:
-  version "3.0.8"
-  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-3.0.8.tgz#8d401f4eab6056c0d874a3d5844a4844f761d4d7"
+mongodb-core@3.0.9:
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-3.0.9.tgz#8327410c88811013fb3e4ac7c4c670f324349be1"
   dependencies:
     bson "~1.0.4"
     require_optional "^1.0.1"
@@ -1448,11 +1448,11 @@ mongodb@2.2.34:
     mongodb-core "2.1.18"
     readable-stream "2.2.7"
 
-mongodb@3.0.9:
-  version "3.0.9"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.9.tgz#742e685e45ac9c3ead02a91c9ebaae7165bb2def"
+mongodb@3.0.10:
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.10.tgz#f948cb9595adcbfcad7444f6b24a040b653b23e8"
   dependencies:
-    mongodb-core "3.0.8"
+    mongodb-core "3.0.9"
 
 mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
@@ -1476,15 +1476,15 @@ mongoose@^4.11.6:
     regexp-clone "0.0.1"
     sliced "1.0.1"
 
-mongoose@^5.1.3:
-  version "5.1.4"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.1.4.tgz#eda83a5d81149c8114b6cac5e8b419324f92cc4b"
+mongoose@^5.1.6:
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.1.6.tgz#af92762c1e0317c897435594e83d6a5952873a0e"
   dependencies:
     async "2.6.1"
     bson "~1.0.5"
-    kareem "2.1.0"
+    kareem "2.2.1"
     lodash.get "4.4.2"
-    mongodb "3.0.9"
+    mongodb "3.0.10"
     mongoose-legacy-pluralize "1.0.2"
     mpath "0.4.1"
     mquery "3.0.0"
@@ -1891,19 +1891,19 @@ ret@~0.1.10:
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
 
-rmisjs@^0.6.6:
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/rmisjs/-/rmisjs-0.6.6.tgz#863890b1c397a1e983a978dc473b235088ccfbdb"
+rmisjs@^0.6.7:
+  version "0.6.7"
+  resolved "https://registry.yarnpkg.com/rmisjs/-/rmisjs-0.6.7.tgz#c26b11aee52a133234b387e6c279f91efa511ea9"
   dependencies:
     jsdom "^11.11.0"
     moment "^2.22.2"
-    mongoose "^5.1.3"
+    mongoose "^5.1.6"
     nconf "^0.10.0"
     refbooks "^0.0.8"
     soap "^0.24.0"
     string-similarity "^1.2.0"
     uuid "^3.2.1"
-    xlsx "^0.13.0"
+    xlsx "^0.13.1"
     xml-js "^1.6.4"
 
 rxjs@^6.1.0:
@@ -2409,9 +2409,9 @@ ws@^4.0.0:
     async-limiter "~1.0.0"
     safe-buffer "~5.1.0"
 
-xlsx@^0.13.0:
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/xlsx/-/xlsx-0.13.0.tgz#2b933690abf137e8ad9253764c73018b100cde43"
+xlsx@^0.13.1:
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/xlsx/-/xlsx-0.13.1.tgz#65cfa245e1af858ece5ba22baa11d19a46e9b400"
   dependencies:
     adler-32 "~1.2.0"
     cfb "~1.0.7"
