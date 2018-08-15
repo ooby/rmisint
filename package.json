@@ -1,6 +1,6 @@
 {
   "name": "rmisint",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "RMIS integration org",
   "main": "index.js",
   "scripts": {
@@ -34,13 +34,13 @@
     "moment": "^2.22.2",
     "nconf": "^0.10.0",
     "refbooks": "^0.0.8",
-    "rmisjs": "^0.6.9"
+    "rmisjs": "^0.6.11"
   },
   "devDependencies": {
     "mocha": "^5.2.0",
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
     "husky": "^0.14.3",
-    "lint-staged": "^7.1.3"
+    "lint-staged": "^7.2.2"
   }
 }
