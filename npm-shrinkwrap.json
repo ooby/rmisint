@@ -1,6 +1,6 @@
 {
   "name": "rmisint",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -1983,18 +1983,18 @@
       "dev": true
     },
     "rmisjs": {
-      "version": "0.6.11",
+      "version": "0.6.12",
       "requires": {
-        "jsdom": "^11.11.0",
+        "jsdom": "^11.12.0",
         "moment": "^2.22.2",
-        "mongoose": "^5.1.6",
+        "mongoose": "^5.2.8",
         "nconf": "^0.10.0",
         "refbooks": "^0.0.8",
         "soap": "^0.24.0",
         "string-similarity": "^1.2.0",
-        "uuid": "^3.2.1",
-        "xlsx": "^0.13.1",
-        "xml-js": "^1.6.4"
+        "uuid": "^3.3.2",
+        "xlsx": "^0.13.4",
+        "xml-js": "^1.6.7"
       },
       "dependencies": {
         "async": {
@@ -2631,7 +2631,7 @@
       }
     },
     "xlsx": {
-      "version": "0.13.3",
+      "version": "0.13.4",
       "requires": {
         "adler-32": "~1.2.0",
         "cfb": "~1.0.8",
