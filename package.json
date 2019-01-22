@@ -1,6 +1,6 @@
 {
   "name": "rmisint",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "RMIS integration org",
   "main": "index.js",
   "scripts": {
