@@ -1,8 +1,10 @@
 .DS_Store
+.git
+.gitignore
+README.md
 /logs/*
 /npm-debug.log
 /node_modules
-/config/config.json
 /debug.js
 /debug.xml
 /debug.json
