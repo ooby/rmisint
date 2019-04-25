@@ -19,7 +19,9 @@ nconf.argv().env().file({ file: path.join(__dirname, 'config.json') }).defaults(
         },
         mongo: {
             options: {
-                reconnectTries: Infinity,
+                reconnectTries: Number.MAX_VALUE,
+                reconnectInterval: 1000,
+                autoReconnect: true,
                 socketTimeoutMS: 10000,
                 keepAlive: true,
                 autoIndex: false,
