@@ -1,12 +1,10 @@
-FROM alpine:3.9
-RUN apk add --no-cache nodejs yarn
-ARG registry="https://registry.npmjs.org"
-ADD . /app
-WORKDIR /app
-RUN yarn install \
-    --prod \
-    --silent \
-    --pure-lockfile \
-    --cache-folder /dev/shm/yarn_cache \
-    --registry $registry
-ENTRYPOINT yarn run
+FROM node:lts-alpine
+ENV NODE_ENV=production
+ARG REGISTRY="https://registry.npmjs.org"
+RUN npm set registry ${REGISTRY}
+RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
+WORKDIR /home/node/app
+COPY --chown=node:node . .
+USER node
+RUN npm ci --production --no-cache
+CMD npm start
