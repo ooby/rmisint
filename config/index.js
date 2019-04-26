@@ -1,7 +1,11 @@
-const nconf = require('nconf');
-const path = require('path');
-nconf.argv().env().file({ file: path.join(__dirname, 'config.json') }).defaults({
-    config: {
+const nconf = require('nconf')
+const path = require('path')
+
+module.exports = nconf
+    .argv()
+    .env()
+    .file(path.resolve(__dirname, './config.json'))
+    .defaults({
         sources: ['MIS'],
         timeout: 900000,
         rmis: {
@@ -29,6 +33,4 @@ nconf.argv().env().file({ file: path.join(__dirname, 'config.json') }).defaults(
             }
         },
         ignoreLog: ['Поле СНИЛС не заполнено']
-    }
-});
-module.exports = nconf;
+    })
