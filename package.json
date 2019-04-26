@@ -1,13 +1,13 @@
 {
   "name": "rmisint",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "RMIS integration org",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "upload": "node upload.js",
     "pm2": "pm2 start index.js -i 1 --name rmisint --log-date-format 'YYYY-MM-DD HH:mm:ss'",
-    "init-upload": "pm2 start initUpload.js -i 1 --name rmisint-upload --no-autorestart",
-    "test": "mocha ./test --timeout 30000"
+    "pm2-upload": "pm2 start initUpload.js -i 1 --name rmisint-upload --no-autorestart"
   },
   "lint-staged": {
     "**/*.js": [
@@ -31,18 +31,13 @@
   },
   "homepage": "https://github.com/ooby/rmisint#readme",
   "dependencies": {
-    "moment": "^2.24.0",
     "nconf": "^0.10.0",
-    "refbooks": "^0.0.8",
     "rmisjs": "^0.7.0"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "chai-http": "^4.2.1",
     "eslint": "^5.16.0",
     "husky": "^2.1.0",
-    "lint-staged": "^8.1.5",
-    "mocha": "^6.1.4"
+    "lint-staged": "^8.1.5"
   },
   "husky": {
     "hooks": {
