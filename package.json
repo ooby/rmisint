@@ -1,19 +1,14 @@
 {
   "name": "rmisint",
-  "version": "0.3.1",
+  "version": "0.4.1",
   "description": "RMIS integration org",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "upload": "node upload.js",
     "pm2": "pm2 start index.js -i 1 --name rmisint --log-date-format 'YYYY-MM-DD HH:mm:ss'",
-    "pm2-upload": "pm2 start initUpload.js -i 1 --name rmisint-upload --no-autorestart"
-  },
-  "lint-staged": {
-    "**/*.js": [
-      "eslint --fix",
-      "git add"
-    ]
+    "pm2-upload": "pm2 start initUpload.js -i 1 --name rmisint-upload --no-autorestart",
+    "format": "prettier --write '**/*.js'"
   },
   "repository": {
     "type": "git",
@@ -32,16 +27,10 @@
   "homepage": "https://github.com/ooby/rmisint#readme",
   "dependencies": {
     "nconf": "^0.10.0",
-    "rmisjs": "^0.7.0"
+    "rmisjs": "^0.8.1"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "husky": "^2.1.0",
-    "lint-staged": "^8.1.5"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "eslint": "^6.1.0",
+    "prettier": "^1.18.2"
   }
 }
