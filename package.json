@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/ooby/rmisint#readme",
   "dependencies": {
-    "nconf": "^0.10.0",
+    "nconf": "^0.11.4",
     "rmisjs": "^0.8.1"
   },
   "devDependencies": {
